@@ -2,7 +2,7 @@ from selenium import webdriver
 from pages.login_page import LoginPage
 from pages.customer_page import CustomerPage
 
-def test_banking_workflow():
+def test_deposit():
     driver = webdriver.Chrome()
 
     try:
