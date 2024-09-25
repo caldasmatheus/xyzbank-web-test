@@ -19,10 +19,13 @@ class CustomerPage:
         )
         login_button.click()
 
-    def verify_initial_balance(self, initial_amount):
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, f"//strong[contains(text(), '{initial_amount}')]"))
+    def verify_initial_balance(self):
+        initial_amount = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//div/strong[2]"))
         )
+        balance_text = initial_amount.text
+        print(f"Saldo obtido: {balance_text}")
+        return int(balance_text)
 
     def click_deposit_tab(self):
         deposit_tab = WebDriverWait(self.driver, 10).until(
@@ -35,8 +38,9 @@ class CustomerPage:
             EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='amount']"))
         )
         deposit_amount_input.send_keys(str(amount))
-
-        deposit_button = self.driver.find_element(By.XPATH, "//button[text()='Deposit']")
+        deposit_button = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//form[contains(@name, 'myForm')]//button[contains(text(), 'Deposit')]"))
+        )
         deposit_button.click()
 
     def verify_success_message(self):
