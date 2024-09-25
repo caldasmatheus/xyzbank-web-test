@@ -1,6 +1,6 @@
 from selenium import webdriver
-from pages.login_page import LoginPage
-from pages.customer_page import CustomerPage
+from pages.loginPage import LoginPage
+from pages.customerPage import CustomerPage
 
 def test_deposit():
     driver = webdriver.Chrome()
