@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-
 class Base:
     def __init__(self, driver, browser=None):
         if driver:
