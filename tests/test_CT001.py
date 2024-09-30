@@ -13,5 +13,6 @@ class Test_CT001:
         customer_page.click_login_button()
         customer_page.click_deposit_tab()
         current_balance = customer_page.verify_initial_balance()
-        customer_page.deposit_amount(current_balance + 100)
+        balance = customer_page.deposit_amount(current_balance + 100)
         customer_page.verify_message("Deposit Successful")
+        assert balance == current_balance + 100, f"Teste falhou: Esperado {current_balance + 100}, encontrado {balance}"

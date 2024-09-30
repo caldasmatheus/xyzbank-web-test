@@ -12,6 +12,7 @@ class Test_CT011:
         customer_page.select_customer('Harry Potter')
         customer_page.click_login_button()
         customer_page.click_withdrawl_tab()
-        currente_balance = customer_page.verify_initial_balance()
-        customer_page.withdraw_larger_amount(currente_balance + 100)
+        current_balance = customer_page.verify_initial_balance()
+        balance = customer_page.withdraw_larger_amount(current_balance + 100)
         customer_page.verify_message('Transaction Failed. You can not withdraw amount more than the balance.')
+        assert balance - 100 == current_balance, f"Teste falhou: Esperado {current_balance}, encontrado {balance - 100}"
