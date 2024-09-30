@@ -23,3 +23,6 @@ class Base:
     def wait_element(self, element_tuple, timeout=5):
         return WebDriverWait(self.driver, timeout).until(
             expected_conditions.visibility_of_element_located(element_tuple))
+
+    def close(self):
+        self.driver.quit()

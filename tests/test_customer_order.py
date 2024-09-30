@@ -4,9 +4,9 @@ from pages.bankManagerPage import BankManagerPage
 
 
 def test_customer_order():
-    driver = webdriver.Chrome()
 
-    login_page = LoginPage(driver)
+    login_page = LoginPage('chrome')
+    driver = login_page.driver
     bank_manager_page = BankManagerPage(driver)
 
     login_page.navigate()

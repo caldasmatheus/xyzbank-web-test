@@ -2,9 +2,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class BankManagerPage:
+from pages.basePage import Base
+
+
+class BankManagerPage(Base):
+
     def __init__(self, driver):
-        self.driver = driver
+        super(BankManagerPage, self).__init__(driver=driver, browser=None)
         self.first_name_elements = (By.XPATH, "//table/tbody/tr/td[1]")
 
     def navigate_to_customers(self):
@@ -30,3 +34,9 @@ class BankManagerPage:
         for element in elements:
             first_names.append(element.text)
         return first_names
+
+    def navigate_to_add_customers(self):
+        customers_button = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button[ng-click='addCust()']"))
+        )
+        customers_button.click()

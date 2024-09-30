@@ -5,9 +5,8 @@ from pages.customerPage import CustomerPage
 
 
 def test_withdrawl_greater_than_balance():
-    driver = webdriver.Chrome()
-
-    login_page = LoginPage(driver)
+    login_page = LoginPage('chrome')
+    driver = login_page.driver
     customer_page = CustomerPage(driver)
     bank_page = BankPage(driver)
 

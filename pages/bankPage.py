@@ -2,9 +2,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class BankPage:
+from pages.basePage import Base
+
+class BankPage(Base):
+
     def __init__(self, driver):
-        self.driver = driver
+        super(BankPage, self).__init__(driver=driver)
 
     def click_withdrawl_button(self):
         withdraw_button = WebDriverWait(self.driver, 10).until(

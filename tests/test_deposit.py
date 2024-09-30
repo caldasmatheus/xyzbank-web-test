@@ -3,8 +3,8 @@ from pages.loginPage import LoginPage
 from pages.customerPage import CustomerPage
 
 def test_deposit():
-    driver = webdriver.Chrome()
-    login_page = LoginPage(driver)
+    login_page = LoginPage('chrome')
+    driver = login_page.driver
     customer_page = CustomerPage(driver)
 
     login_page.navigate()

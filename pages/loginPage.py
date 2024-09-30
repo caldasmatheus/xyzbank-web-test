@@ -2,9 +2,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class LoginPage:
-    def __init__(self, driver):
-        self.driver = driver
+from pages.basePage import Base
+
+class LoginPage(Base):
+    def __init__(self, browser):
+        super(LoginPage, self).__init__(driver=None, browser=browser)
 
     def navigate(self):
         self.driver.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login")
