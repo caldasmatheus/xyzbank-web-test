@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-
 class Base:
     def __init__(self, driver, browser=None):
         if driver:
@@ -23,3 +22,6 @@ class Base:
     def wait_element(self, element_tuple, timeout=5):
         return WebDriverWait(self.driver, timeout).until(
             expected_conditions.visibility_of_element_located(element_tuple))
+
+    def close(self):
+        self.driver.quit()
