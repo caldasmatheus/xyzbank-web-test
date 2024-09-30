@@ -19,12 +19,11 @@ class CustomerPage(Base):
 
     MESSAGE = '.ng-scope span[ng-show="message"]'
 
-    first_name_field = (By.CSS_SELECTOR, '[ng-model="fName"]')
-    last_name_field = (By.CSS_SELECTOR, '[ng-model="lName"]')
-    post_code_field = (By.CSS_SELECTOR, '[ng-model="postCd"]')
-    add_button = (By.XPATH, '/html/body/div/div/div[2]/div/div[2]/div/div/form/button')
-    search_customer_field = (By.CSS_SELECTOR, '[ng-model="searchCustomer"]')
-    button_delete = (By.CSS_SELECTOR, '[ng-click="deleteCust(cust)"]')
+    FIRST_NAME = "input[ng-model='fName']"
+    LAST_NAME = "input[ng-model='lName']"
+    POST_CODE = "input[ng-model='postCd']"
+    SEARCH_CUSTOMER = 'input[ng-model="searchCustomer"]'
+    DELETE_BTN = '[ng-click="deleteCust(cust)"]'
 
     def __init__(self, driver):
         super(CustomerPage, self).__init__(driver=driver)
@@ -67,50 +66,44 @@ class CustomerPage(Base):
         )
         withdraw_button.click()
 
-    def add_new_customer(self):
+    def fill_customer_information(self, first_name, last_name, post_code):
+        self.wait_element((By.CSS_SELECTOR, self.FIRST_NAME)).send_keys(first_name)
+        self.wait_element((By.CSS_SELECTOR, self.LAST_NAME)).send_keys(last_name)
+        self.wait_element((By.CSS_SELECTOR, self.POST_CODE)).send_keys(post_code)
 
+    def submit_form(self):
+        submit_button = WebDriverWait(self.driver, 5).until(
+            EC.element_to_be_clickable((By.XPATH, "//form[contains(@name, 'myForm')]//button[contains(text(), 'Add Customer')]"))
+        )
+        submit_button.click()
+
+    def verify_alert_message(self, alert_msg):
+        WebDriverWait(self.driver, 5).until(EC.alert_is_present())
+        alert = self.driver.switch_to.alert
+        alert_text = alert.text
+        assert alert_msg in alert_text
+        alert.accept()
+
+    def search_customer(self,first_name):
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(self.first_name_field)
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.SEARCH_CUSTOMER))
         )
+        search_input = self.wait_element((By.CSS_SELECTOR, self.SEARCH_CUSTOMER))
+        search_input.clear()
+        search_input.send_keys(first_name)
+        customers_table = self.driver.find_element(By.TAG_NAME, "table")
+        rows = customers_table.find_elements(By.TAG_NAME, "tr")
 
-        self.driver.find_element(*self.first_name_field).send_keys("Iraci")
-        self.driver.find_element(*self.last_name_field).send_keys("Teste")
-        self.driver.find_element(*self.post_code_field).send_keys("000000-001")
-
-        self.driver.find_element(*self.add_button).click()
-
-        WebDriverWait(self.driver, 10).until(EC.alert_is_present())
-
-        alert_text = self.driver.switch_to.alert.text
-
-        self.driver.switch_to.alert.accept()
-
-        return 'Customer added successfully with customer' in alert_text
-
-    def navigate_to_search_customers(self):
-        customers_button = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "button[ng-click='showCust()']"))
-        )
-        customers_button.click()
-
-    def search_customer(self):
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(self.search_customer_field)
-        )
-
-        self.driver.find_element(*self.search_customer_field).send_keys("Harry")
-
-        first_name = self.driver.find_element(By.XPATH, '/html/body/div/div/div[2]/div/div[2]/div/div/table/tbody/tr/td[1]').text
-
-        return first_name == 'Harry'
+        for row in rows:
+            cells = row.find_elements(By.TAG_NAME, "td")
+            if any(first_name in cell.text for cell in cells):
+                print(f"{first_name} found in row.")
+                return True
+        print(f"{first_name} not found in any row.")
+        return False
 
     def delete_customer(self):
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(self.button_delete)
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.DELETE_BTN))
         )
-
-        self.driver.find_element(*self.button_delete).click()
-
-        elements = self.driver.find_elements(By.XPATH, '/html/body/div/div/div[2]/div/div[2]/div/div/table/tbody/tr/td[1]')
-
-        return not any(elements)
+        self.wait_element((By.CSS_SELECTOR, self.DELETE_BTN)).click()

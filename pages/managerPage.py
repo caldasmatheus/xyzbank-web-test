@@ -17,7 +17,7 @@ class BankManagerPage(Base):
         self.wait_element((By.CSS_SELECTOR, self.ADD_CUSTOMER_BTN)).click()
 
     def navigate_to_open_account(self):
-        self.wait_element((By.CSS_SELECTOR, self. OPEN_ACCOUNT_BTN)).click()
+        self.wait_element((By.CSS_SELECTOR, self.OPEN_ACCOUNT_BTN)).click()
 
     def navigate_to_customers(self):
         self.wait_element((By.CSS_SELECTOR, self.CUSTOMERS_BTN)).click()
@@ -39,9 +39,3 @@ class BankManagerPage(Base):
         for element in elements:
             first_names.append(element.text)
         return first_names
-
-    def navigate_to_add_customers(self):
-        customers_button = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "button[ng-click='addCust()']"))
-        )
-        customers_button.click()
