@@ -39,3 +39,7 @@ class managerPage(Base):
         for element in elements:
             first_names.append(element.text)
         return first_names
+
+    def get_list_customers(self):
+        list_customers = self.driver.find_elements(By.CSS_SELECTOR, 'div table[class*="table"] tbody tr td:nth-child(1)')
+        return list_customers
