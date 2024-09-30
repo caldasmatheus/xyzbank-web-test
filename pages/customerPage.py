@@ -19,6 +19,13 @@ class CustomerPage(Base):
 
     MESSAGE = '.ng-scope span[ng-show="message"]'
 
+    first_name_field = (By.CSS_SELECTOR, '[ng-model="fName"]')
+    last_name_field = (By.CSS_SELECTOR, '[ng-model="lName"]')
+    post_code_field = (By.CSS_SELECTOR, '[ng-model="postCd"]')
+    add_button = (By.XPATH, '/html/body/div/div/div[2]/div/div[2]/div/div/form/button')
+    search_customer_field = (By.CSS_SELECTOR, '[ng-model="searchCustomer"]')
+    button_delete = (By.CSS_SELECTOR, '[ng-click="deleteCust(cust)"]')
+
     def __init__(self, driver):
         super(CustomerPage, self).__init__(driver=driver)
 
@@ -61,29 +68,22 @@ class CustomerPage(Base):
         withdraw_button.click()
 
     def add_new_customer(self):
-        first_name_field = (By.CSS_SELECTOR, '[ng-model="fName"]')
-        last_name_field = (By.CSS_SELECTOR, '[ng-model="lName"]')
-        post_code_field = (By.CSS_SELECTOR, '[ng-model="postCd"]')
-        add_button  = (By.XPATH, '/html/body/div/div/div[2]/div/div[2]/div/div/form/button')
 
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(first_name_field)
+            EC.presence_of_element_located(self.first_name_field)
         )
 
-        self.driver.find_element(*first_name_field).send_keys("Iraci")
-        self.driver.find_element(*last_name_field).send_keys("Teste")
-        self.driver.find_element(*post_code_field).send_keys("000000-001")
+        self.driver.find_element(*self.first_name_field).send_keys("Iraci")
+        self.driver.find_element(*self.last_name_field).send_keys("Teste")
+        self.driver.find_element(*self.post_code_field).send_keys("000000-001")
 
-        self.driver.find_element(*add_button).click()
+        self.driver.find_element(*self.add_button).click()
 
         WebDriverWait(self.driver, 10).until(EC.alert_is_present())
 
         alert_text = self.driver.switch_to.alert.text
 
         self.driver.switch_to.alert.accept()
-
-        #pra ver em tela descomentar o time
-        # time.sleep(5000)
 
         return 'Customer added successfully with customer' in alert_text
 
@@ -94,29 +94,22 @@ class CustomerPage(Base):
         customers_button.click()
 
     def search_customer(self):
-        search_customer = (By.CSS_SELECTOR, '[ng-model="searchCustomer"]')
-
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(search_customer)
+            EC.presence_of_element_located(self.search_customer_field)
         )
 
-        self.driver.find_element(*search_customer).send_keys("Harry")
+        self.driver.find_element(*self.search_customer_field).send_keys("Harry")
 
         first_name = self.driver.find_element(By.XPATH, '/html/body/div/div/div[2]/div/div[2]/div/div/table/tbody/tr/td[1]').text
-
-        # pra ver em tela descomentar o time
-        # time.sleep(5)
 
         return first_name == 'Harry'
 
     def delete_customer(self):
-        button_delete = (By.CSS_SELECTOR, '[ng-click="deleteCust(cust)"]')
-
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(button_delete)
+            EC.presence_of_element_located(self.button_delete)
         )
 
-        self.driver.find_element(*button_delete).click()
+        self.driver.find_element(*self.button_delete).click()
 
         elements = self.driver.find_elements(By.XPATH, '/html/body/div/div/div[2]/div/div[2]/div/div/table/tbody/tr/td[1]')
 

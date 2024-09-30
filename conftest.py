@@ -23,3 +23,9 @@ def open_browser(request):
 def navegate_to_home(open_browser):
     home_page = open_browser
     yield home_page
+
+@pytest.fixture
+def navigate_to_manager(open_browser):
+    home_page = open_browser
+    home_page.go_to_manager_page()
+    yield home_page
