@@ -13,11 +13,9 @@ class Test_CT003:
         home_page = run_all_browser
         home_page.open_app()
         home_page.go_to_customer_page()
-
         customer_page = CustomerPage(driver=home_page.driver)
         customer_page.select_customer('Hermoine Granger')
         customer_page.click_login_button()
-
         customer_page.click_transactions_tab()
 
         customer_page.get_transaction_rows()
