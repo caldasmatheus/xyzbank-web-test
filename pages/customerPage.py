@@ -139,3 +139,21 @@ class CustomerPage(Base):
         transaction_rows = self.get_transaction_rows()
         return len(transaction_rows) == 0
 
+    def enter_customer_details(self, first_name, last_name, post_code):
+        first_name_input = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='First Name']"))
+        )
+        first_name_input.send_keys(first_name)
+
+        last_name_input = self.driver.find_element(By.XPATH, "//input[@placeholder='Last Name']")
+        last_name_input.send_keys(last_name)
+
+        post_code_input = self.driver.find_element(By.XPATH, "//input[@placeholder='Post Code']")
+        post_code_input.send_keys(post_code)
+
+    def handle_alert(self):
+        alert = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
+        alert_text = alert.text
+        alert.accept()
+        return alert_text
+
