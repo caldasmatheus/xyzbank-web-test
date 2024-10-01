@@ -1,8 +1,6 @@
-import time
-
 import pytest
 from conftest import run_all_browser
-from pages.managerPage import managerPage
+from pages.ManagerPage import ManagerPage
 
 class Test_CT008:
 
@@ -10,7 +8,7 @@ class Test_CT008:
     def test_first_name_customer_order(self, run_all_browser):
         home_page = run_all_browser
         home_page.go_to_manager_page()
-        bank_manager_page = managerPage(driver=home_page.driver)
+        bank_manager_page = ManagerPage(driver=home_page.driver)
         bank_manager_page.navigate_to_customers()
         bank_manager_page.order_by_first_name()
         first_names = bank_manager_page.get_first_names()
