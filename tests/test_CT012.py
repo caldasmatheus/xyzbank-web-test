@@ -1,7 +1,7 @@
 import pytest
 from conftest import run_all_browser
 from pages.customerPage import CustomerPage
-from pages.managerPage import managerPage
+from pages.ManagerPage import ManagerPage
 
 class Test_CT012:
 
@@ -15,7 +15,7 @@ class Test_CT012:
         home_page.go_to_manager_page()
 
         customer_page = CustomerPage(driver=home_page.driver)
-        manager_page = managerPage(driver=home_page.driver)
+        manager_page = ManagerPage(driver=home_page.driver)
 
         manager_page.navigate_to_add_customer()
 

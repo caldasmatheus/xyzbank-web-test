@@ -157,3 +157,8 @@ class CustomerPage(Base):
         alert.accept()
         return alert_text
 
+    def verify_welcome_title(self, msg):
+        message = self.wait_element((By.XPATH, f"//strong[contains(text(), ' Welcome ')]/span[contains(text(), '{msg}')]"))
+        assert message.text == msg
+        return msg
+

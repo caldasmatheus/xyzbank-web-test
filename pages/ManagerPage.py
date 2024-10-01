@@ -4,13 +4,13 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from pages.basePage import Base
 
-class managerPage(Base):
+class ManagerPage(Base):
     ADD_CUSTOMER_BTN = '.center button[ng-click="addCust()"]'
     OPEN_ACCOUNT_BTN = '.center button[ng-click="openAccount()"]'
     CUSTOMERS_BTN = '.center button[ng-click="showCust()"]'
 
     def __init__(self, driver):
-        super(managerPage, self).__init__(driver=driver)
+        super(ManagerPage, self).__init__(driver=driver)
         self.first_name_elements = (By.XPATH, "//table/tbody/tr/td[1]")
 
     def navigate_to_add_customer(self):
@@ -43,3 +43,8 @@ class managerPage(Base):
     def get_list_customers(self):
         list_customers = self.driver.find_elements(By.CSS_SELECTOR, 'div table[class*="table"] tbody tr td:nth-child(1)')
         return list_customers
+
+    def select_customer_and_currency(self, customer, currency):
+        self.wait_element((By.ID, "userSelect")).send_keys(customer)
+        self.wait_element((By.ID, "currency")).send_keys(currency)
+        self.wait_element((By.XPATH, "//button[@type='submit' and @value='']")).click()
