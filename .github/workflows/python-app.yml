@@ -13,6 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Set up environment variables
+      run: echo "HEADLESS=true" >> $GITHUB_ENV  # Define sua própria variável
+
     - name: Set up Chrome
       run: |
         sudo apt-get update
@@ -30,4 +33,3 @@ jobs:
 
     - name: Run tests
       run: pytest
-

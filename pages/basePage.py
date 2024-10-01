@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions
@@ -8,9 +9,12 @@ class Base:
         if driver is None:
             if browser == 'chrome':
                 chrome_options = Options()
-                chrome_options.add_argument('--headless')
-                chrome_options.add_argument('--no-sandbox')
-                chrome_options.add_argument('--disable-dev-shm-usage')
+
+                if os.getenv('HEADLESS'):
+                    chrome_options.add_argument('--headless')
+                    chrome_options.add_argument('--no-sandbox')
+                    chrome_options.add_argument('--disable-dev-shm-usage')
+
                 self.driver = webdriver.Chrome(options=chrome_options)
         else:
             self.driver = driver
