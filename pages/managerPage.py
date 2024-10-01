@@ -43,3 +43,45 @@ class managerPage(Base):
     def get_list_customers(self):
         list_customers = self.driver.find_elements(By.CSS_SELECTOR, 'div table[class*="table"] tbody tr td:nth-child(1)')
         return list_customers
+    
+    def fill_customer_details(self, first_name: str, last_name: str, postal_code: str) -> None:
+        try:
+            first_name_field = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//input[@ng-model='fName']"))
+            )
+            first_name_field.send_keys(first_name)
+
+            last_name_field = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//input[@ng-model='lName']"))
+            )
+            last_name_field.send_keys(last_name)
+
+            postal_code_field = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//input[@ng-model='postCd']"))
+            )
+            postal_code_field.send_keys(postal_code)
+
+            add_customer_button = WebDriverWait(self.driver, 10).until(
+                EC.element_to_be_clickable(
+                    (By.XPATH, "//button[@type='submit' and normalize-space(text())='Add Customer']"))
+            )
+            add_customer_button.click()
+        except Exception as e:
+            print(f"An error occurred while filling customer details: {e}")
+
+    def select_customer_and_currency(self, customer_name, currency):
+        customer_select_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.ID, "userSelect"))
+        )
+        select_customer = Select(customer_select_element)
+        select_customer.select_by_visible_text(customer_name)
+
+        currency_dropdown = Select(WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.ID, "currency"))
+        ))
+        currency_dropdown.select_by_value(currency)
+
+        process_button = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[@type='submit' and @value='']"))
+        )
+        process_button.click()
