@@ -1,7 +1,7 @@
 import pytest
 import pages.homePage
 from conftest import run_all_browser
-from pages.managerPage import ManagerPage
+from pages.managerPage import managerPage
 
 class test_CT002:
 
@@ -10,7 +10,7 @@ class test_CT002:
         driver = run_all_browser
         home_page = pages.homePage.HomePage(driver)
         home_page.go_to_manager_page()
-        manager_page = ManagerPage(driver=driver)
+        manager_page = managerPage(driver=driver)
         manager_page.navigate_to_add_customer()
         manager_page.fill_customer_details(first_name="Alice", last_name="M", postal_code="12345")
         manager_page.navigate_to_open_account()
