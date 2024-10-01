@@ -9,11 +9,11 @@ class Test_CT001:
         home_page = run_all_browser
         home_page.go_to_customer_page()
         customer_page = CustomerPage(driver=home_page.driver)
-        customer_page.select_customer('Hermoine Granger')
+        customer_page.select_customer('Harry Potter')
         customer_page.click_login_button()
         customer_page.click_deposit_tab()
         current_balance = customer_page.verify_initial_balance()
-        balance = customer_page.deposit_amount(current_balance + 100)
+        balance = customer_page.deposit_amount(current_balance + 50000)
         customer_page.verify_message("Deposit Successful")
         new_balance = balance + current_balance
         value_final = customer_page.verify_initial_balance()

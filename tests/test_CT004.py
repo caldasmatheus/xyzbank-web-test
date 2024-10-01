@@ -2,7 +2,6 @@ import pytest
 from conftest import run_all_browser
 from pages.customerPage import CustomerPage
 
-
 class Test_CT004:
 
     @pytest.mark.parametrize('all_browser', ['chrome'])
