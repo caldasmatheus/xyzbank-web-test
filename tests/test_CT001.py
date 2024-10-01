@@ -15,4 +15,6 @@ class Test_CT001:
         current_balance = customer_page.verify_initial_balance()
         balance = customer_page.deposit_amount(current_balance + 100)
         customer_page.verify_message("Deposit Successful")
-        assert balance == current_balance + 100, f"Teste falhou: Esperado {current_balance + 100}, encontrado {balance}"
+        new_balance = balance + current_balance
+        value_final = customer_page.verify_initial_balance()
+        assert new_balance == value_final, f"Teste falhou: Esperado {value_final}, encontrado {new_balance}"
