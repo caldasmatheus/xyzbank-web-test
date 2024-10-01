@@ -9,10 +9,12 @@ class Test_CT011:
         home_page = run_all_browser
         home_page.go_to_customer_page()
         customer_page = CustomerPage(driver=home_page.driver)
-        customer_page.select_customer('Harry Potter')
+        customer_page.select_customer('Hermoine Granger')
         customer_page.click_login_button()
         customer_page.click_withdrawl_tab()
         current_balance = customer_page.verify_initial_balance()
-        balance = customer_page.withdraw_larger_amount(current_balance + 100)
+        balance = customer_page.withdraw_larger_amount(current_balance + 50000)
         customer_page.verify_message('Transaction Failed. You can not withdraw amount more than the balance.')
-        assert balance - 100 == current_balance, f"Teste falhou: Esperado {current_balance}, encontrado {balance - 100}"
+        new_balance = balance - 50000
+        value_final = customer_page.verify_initial_balance()
+        assert new_balance == value_final, f"Teste falhou: Esperado {value_final}, encontrado {new_balance}"

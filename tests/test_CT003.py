@@ -1,8 +1,6 @@
 import time
-
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
-
 from conftest import run_all_browser
 from pages.customerPage import CustomerPage
 
