@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -8,14 +10,16 @@ class CustomerPage(Base):
     SELECT_YOUR_NAME = 'userSelect'
     LOGIN_BTN = "//button[text()='Login']"
 
+    ACCOUNT_DROPDOWN = "accountSelect"
     INITIAL_BALANCE = '//div/strong[2]'
 
-    MENU_TRANSACTIONS_BTN = '.center button[ng-click="transactions()"]'
+    MENU_TRANSACTIONS_BTN = "//button[contains(text(), 'Transactions')]"
     MENU_DEPOSIT_BTN = "//button[contains(text(), 'Deposit')]"
     MENU_WITHDRAWL_BTN = "//button[contains(text(), 'Withdrawl')]"
 
+    TRANSACTIONS_TABLE = "//table[@class='table table-bordered table-striped']"
     MENU_TRANSACTIONS_BTN_RESET = "//button[contains(text(), 'Reset')]"
-
+    MENU_TRANSACTIONS_BTN_BACK = "//button[contains(text(), 'Back')]"
 
     AMOUNT = "//input[@placeholder='amount']"
     DEPOSIT_BTN = "//form[contains(@name, 'myForm')]//button[contains(text(), 'Deposit')]"
@@ -43,6 +47,10 @@ class CustomerPage(Base):
         initial_amount = self.wait_element((By.XPATH, self.INITIAL_BALANCE))
         balance_text = initial_amount.text
         return int(balance_text)
+
+    def wait_initial_balance(self):
+        self.wait_element((By.XPATH, self.INITIAL_BALANCE))
+        time.sleep(1)
 
     def click_deposit_tab(self):
         self.wait_element((By.XPATH, self.MENU_DEPOSIT_BTN)).click()
@@ -120,10 +128,7 @@ class CustomerPage(Base):
         self.wait_element((By.CSS_SELECTOR, self.DELETE_BTN)).click()
 
     def click_transactions_tab(self):
-        transactions_tab = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Transactions')]"))
-        )
-        transactions_tab.click()
+        self.wait_element((By.XPATH, self.MENU_TRANSACTIONS_BTN)).click()
 
     def get_transaction_rows(self):
         transactions_table = WebDriverWait(self.driver, 10).until(
@@ -134,6 +139,24 @@ class CustomerPage(Base):
 
     def click_reset_button(self):
         self.wait_element((By.XPATH, self.MENU_TRANSACTIONS_BTN_RESET)).click()
+
+    def click_back_button(self):
+        self.wait_element((By.XPATH, self.MENU_TRANSACTIONS_BTN_BACK)).click()
+
+    def verify_transaction(self, expected_amount):
+        self.wait_element((By.XPATH, self.MENU_TRANSACTIONS_BTN)).click()
+        transactions_table = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, self.TRANSACTIONS_TABLE)))
+
+        rows = transactions_table.find_elements(By.XPATH, ".//tbody/tr")
+
+        for row in rows:
+            columns = row.find_elements(By.TAG_NAME, "td")
+            amount = columns[1].text.strip()
+            transaction_type = columns[2].text.strip().lower()
+            if f"{expected_amount}" == amount and transaction_type == "credit":
+                return True
+        return False
 
     def verify_no_transactions(self):
         transaction_rows = self.get_transaction_rows()
@@ -162,3 +185,16 @@ class CustomerPage(Base):
         assert message.text == msg
         return msg
 
+    def get_account_options(self):
+        account_dropdown = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.ID, "accountSelect"))
+        )
+        return account_dropdown.find_elements(By.TAG_NAME, 'option')
+
+    def switch_account(self, accounts):
+        current_account = accounts[0].text
+        accounts[1].click()
+        WebDriverWait(self.driver, 10).until(
+            EC.text_to_be_present_in_element((By.ID, "accountSelect"), accounts[1].text)
+        )
+        return current_account, accounts[1].text
