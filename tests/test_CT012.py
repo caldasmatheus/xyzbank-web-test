@@ -1,6 +1,5 @@
 import pytest
 from conftest import run_all_browser
-from pages.customerPage import CustomerPage
 from pages.ManagerPage import ManagerPage
 
 class Test_CT012:
@@ -14,17 +13,17 @@ class Test_CT012:
         home_page = run_all_browser
         home_page.go_to_manager_page()
 
-        customer_page = CustomerPage(driver=home_page.driver)
         manager_page = ManagerPage(driver=home_page.driver)
 
         manager_page.navigate_to_add_customer()
 
-        customer_page.enter_customer_details(existing_first_name, existing_last_name, existing_post_code)
-        customer_page.submit_form()
-        customer_page.handle_alert()
+        manager_page.fill_customer_information(existing_first_name, existing_last_name, existing_post_code)
+        manager_page.submit_form()
+        alert_verified = manager_page.verify_alert_message('Customer added successfully with customer')
+        assert alert_verified, "Teste falhou: A mensagem de alerta não corresponde à esperada."
 
         manager_page.navigate_to_add_customer()
-        customer_page.enter_customer_details(existing_first_name, existing_last_name, existing_post_code)
-        customer_page.submit_form()
-        alert_text = customer_page.handle_alert()
-        assert "Please check the details. Customer may be duplicate." in alert_text, f"Mensagem inesperada: {alert_text}"
+        manager_page.fill_customer_information(existing_first_name, existing_last_name, existing_post_code)
+        manager_page.submit_form()
+        alert_verified = manager_page.verify_alert_message('Please check the details. Customer may be duplicate.')
+        assert alert_verified, "Teste falhou: A mensagem de alerta não corresponde à esperada."

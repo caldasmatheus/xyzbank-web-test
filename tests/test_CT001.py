@@ -12,9 +12,9 @@ class Test_CT001:
         customer_page.select_customer('Harry Potter')
         customer_page.click_login_button()
         customer_page.click_deposit_tab()
-        current_balance = customer_page.verify_initial_balance()
+        current_balance = customer_page.verify_balance()
         balance = customer_page.deposit_amount(current_balance + 50000)
         customer_page.verify_message("Deposit Successful")
         new_balance = balance + current_balance
-        value_final = customer_page.verify_initial_balance()
+        value_final = customer_page.verify_balance()
         assert new_balance == value_final, f"Teste falhou: Esperado {value_final}, encontrado {new_balance}"
