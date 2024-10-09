@@ -2,8 +2,9 @@
 
 ### Descrição
 
-Este projeto contém o código responsável por testar funcionalmente o sistema [XYZ Bank](https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login).
+Este projeto contém o código responsável por realizar testes end-to-end (E2E) do sistema [XYZ Bank](https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login).
 
+- [Allure Reports](https://allurereport.org)
 - [Python 3.12.0](https://www.python.org/downloads/release/python-3120/)
 - [Pytest 8.3.2](https://docs.pytest.org/en/stable/announce/release-8.3.2.html)
 - [Selenium 4.24.0](https://www.selenium.dev/blog/2024/selenium-4-24-released/)
@@ -27,6 +28,7 @@ Na raiz do projeto:
 pip install pytest==X.X.X selenium==Y.Y.Y
 ```
 
+:exclamation: **Observação**: Para questões relacionadas a autenticação por SSH, consulte a documentação do GitHub em "[Crie e Adicione seu Par de Chaves SSH](https://docs.github.com/pt/authentication/connecting-to-github-with-ssh)".
 
 ### Tipos de Execução dos Testes
 

@@ -16,7 +16,7 @@ class Test_CT005:
         customer_page.verify_no_transactions()
         customer_page.click_back_button()
         customer_page.click_deposit_tab()
-        current_balance = customer_page.verify_initial_balance()
+        current_balance = customer_page.verify_balance()
         deposit_value = customer_page.deposit_amount(current_balance + 50000)
         customer_page.verify_message("Deposit Successful")
         customer_page.wait_initial_balance()

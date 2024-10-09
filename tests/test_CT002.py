@@ -17,14 +17,14 @@ class Test_CT002:
         first_name = faker.first_name()
         last_name = faker.last_name()
         post_code = faker.postcode()
-        customer_page.fill_customer_information(first_name, last_name, post_code)
-        customer_page.submit_form()
-        alert_verified = customer_page.verify_alert_message('Customer added successfully with customer')
+        manager_page.fill_customer_information(first_name, last_name, post_code)
+        manager_page.submit_form()
+        alert_verified = manager_page.verify_alert_message('Customer added successfully with customer')
         assert alert_verified, "Teste falhou: A mensagem de alerta não corresponde à esperada."
         manager_page.navigate_to_open_account()
         complete_name = first_name + ' ' + last_name
         manager_page.select_customer_and_currency(complete_name, 'Dollar')
-        alert_verified = customer_page.verify_alert_message('Account created successfully with account Number')
+        alert_verified = manager_page.verify_alert_message('Account created successfully with account Number')
         assert alert_verified, "Teste falhou: A mensagem de alerta não corresponde à esperada."
         home_page.go_to_home_page()
         home_page.go_to_customer_page()
